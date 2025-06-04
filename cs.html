@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<title>CS Girelim mi?</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: white;
+    text-align: center;
+    margin: 0;
+    padding: 50px 0;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+  h1 {
+    color: black;
+    font-size: 2rem;
+  }
+  .buttons {
+    margin-top: 40px;
+    position: relative;
+    height: 60px;
+  }
+  button {
+    position: absolute;
+    top: 0;
+    padding: 18px 60px;
+    font-size: 1.3rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+  }
+  #yesBtn {
+    background-color: green;
+    color: white;
+    left: 35%;
+    transform-origin: center;
+    transform: scale(1);
+  }
+  #noBtn {
+    background-color: red;
+    color: white;
+    left: 55%;
+    padding: 18px 60px;
+  }
+
+  /* Ateş emoji stilleri */
+  .fireball {
+    position: fixed;
+    top: -2rem;
+    font-size: 2rem;
+    color: orange;
+    user-select: none;
+    pointer-events: none;
+    z-index: 9999;
+    animation: fallFire linear forwards;
+  }
+
+  @keyframes fallFire {
+    0% {
+      top: -3rem;
+      opacity: 1;
+    }
+    100% {
+      top: 100vh;
+      opacity: 0;
+    }
+  }
+
+  /* Maymun emojisi */
+  #monkey {
+    position: absolute;
+    font-size: 1.6rem;
+    pointer-events: none;
+    user-select: none;
+    top: 50%;
+    left: 105%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  #noBtn:hover #monkey {
+    opacity: 1;
+  }
+
+  /* Yarrağını yalarımm */
+  #adamsin {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8rem;  /* Daha büyük */
+    font-weight: bold;
+    color: black;
+    user-select: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 10000;
+  }
+</style>
+</head>
+<body>
+
+<h1>CS girelim mi?</h1>
+
+<div class="buttons">
+  <button id="yesBtn">Girelim</button>
+  <button id="noBtn">Olmaz
+    <span id="monkey">🐒</span>
+  </button>
+</div>
+
+<div id="adamsin">Yarrağını yalarımm</div>
+
+<script>
+  const noBtn = document.getElementById('noBtn');
+  const yesBtn = document.getElementById('yesBtn');
+  const adamsin = document.getElementById('adamsin');
+
+  let yesScale = 1;
+
+  let prevLeftPercent = 55;
+  let prevTopPx = 0;
+
+  function getDistance(x1, y1, x2, y2) {
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    return Math.sqrt(dx*dx + dy*dy);
+  }
+
+  noBtn.addEventListener('mouseenter', () => {
+    let newLeftPercent, newTopPx, distance;
+    do {
+      newLeftPercent = Math.random() * 65 + 15; // %15 - %80 arası
+      newTopPx = Math.random() * 150;           // 0 - 150 px arası
+
+      const vw = window.innerWidth;
+      const prevLeftPx = vw * (prevLeftPercent / 100);
+      const newLeftPx = vw * (newLeftPercent / 100);
+
+      distance = getDistance(prevLeftPx, prevTopPx, newLeftPx, newTopPx);
+    } while(distance < 150);
+
+    noBtn.style.left = newLeftPercent + '%';
+    noBtn.style.top = newTopPx + 'px';
+
+    prevLeftPercent = newLeftPercent;
+    prevTopPx = newTopPx;
+
+    yesScale += 0.15;
+    yesBtn.style.transform = `scale(${yesScale})`;
+  });
+
+  yesBtn.addEventListener('click', () => {
+    const duration = 3000;
+    const intervalTime = 100;
+    let elapsed = 0;
+
+    // "Yarrağını yalarımm" yazısını göster
+    adamsin.style.opacity = '1';
+
+    setTimeout(() => {
+      adamsin.style.opacity = '0';
+    }, 2500);
+
+    const interval = setInterval(() => {
+      createFireball();
+      elapsed += intervalTime;
+      if(elapsed >= duration) {
+        clearInterval(interval);
+      }
+    }, intervalTime);
+
+    function createFireball() {
+      const fireball = document.createElement('div');
+      fireball.className = 'fireball';
+      fireball.textContent = '🔥';
+
+      fireball.style.left = Math.random() * 100 + 'vw';
+      fireball.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+      fireball.style.animationDuration = (2 + Math.random()) + 's';
+
+      document.body.appendChild(fireball);
+
+      fireball.addEventListener('animationend', () => {
+        fireball.remove();
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
