@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eğlenceli Soru</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        #yes {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        #no {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.1s;
+        }
+        .message {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="question">Soru content varıng girelim mi?</h1>
+        <div class="buttons">
+            <button id="yes">Evet</button>
+            <button id="no">Hayır</button>
+        </div>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yes');
+        const noBtn = document.getElementById('no');
+        const question = document.getElementById('question');
+        const message = document.getElementById('message');
+        
+        // Yönlendirme yapılacak URL'yi buraya yazın
+        const redirectUrl = 'https://www.google.com/search?sca_esv=503182be980b3154&q=dick&udm=2&fbs=AIIjpHwSU0Xn4FRaYzhfgs1jmQvO1iHxYDkd3SsHZ_fasDskA_FnrRYXwaoTYk_bFZyqo4JprrH5re36zGue2VzwVym94moFUON_DAg40lK8i7pJ13_3T7ZaKGWyFMEITWgvHarvw35iYmseEelUD-r3O_khh7Ivgxh758_D9h3bm2mtgkoazdQG86ReeyhYTTtnX9WZ9a6YivAyrMyK_vjGww3bwabdYyJEXH2MSHLiUmR7APGn6cg&sa=X&ved=2ahUKEwiRueS-jdmNAxViU1UIHeTqNwUQtKgLegQIEhAB&biw=1920&bih=953#vhid=DOV4x7FK7HkoEM&vssid=mosaic';  // 🎯 DEĞİŞTİRİN
+        
+        yesBtn.addEventListener('mouseover', () => {
+            // Evet butonuna gelince büyüsün
+            yesBtn.style.transform = 'scale(1.2)';
+        });
+        
+        yesBtn.addEventListener('mouseout', () => {
+            // Fare çekilince normal boyutuna dönsün
+            yesBtn.style.transform = 'scale(1)';
+        });
+        
+        noBtn.addEventListener('mouseover', () => {
+            // Hayır butonuna gelince kaçsın
+            const container = document.querySelector('.container');
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+            
+            const maxX = containerRect.width - btnRect.width;
+            const maxY = containerRect.height - btnRect.height;
+            
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+        });
+        
+        yesBtn.addEventListener('click', () => {
+            // Evet butonuna basınca URL'ye yönlendir
+            window.location.href = redirectUrl;  // 📌 Yönlendirme burada!
+        });
+        
+        noBtn.addEventListener('click', () => {
+            // Hayır butonuna basınca
+            question.textContent = 'Neden hayır diyorsun ki? :(';
+            message.textContent = 'Tekrar denemek ister misin?';
+        });
+    </script>
+</body>
+</html>
